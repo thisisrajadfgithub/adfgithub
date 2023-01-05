@@ -1,0 +1,39 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-rajnew-lab-datafactory"
+		},
+		"ADLSGen2_accountKey": {
+			"value": ""
+		},
+		"AzureBlobStorage1_in_connectionString": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_destgen2_accountKey": {
+			"value": ""
+		},
+		"Imagedata_connectionString": {
+			"value": ""
+		},
+		"Imagedatals_connectionString": {
+			"value": ""
+		},
+		"SQLDB_connectionString": {
+			"value": ""
+		},
+		"adfgithubgen2_accountKey": {
+			"value": ""
+		},
+		"ADLSGen2_properties_typeProperties_url": {
+			"value": "https://adlsrajtorageaccount1.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage1_destgen2_properties_typeProperties_url": {
+			"value": "https://gen2storagelab.dfs.core.windows.net/"
+		},
+		"adfgithubgen2_properties_typeProperties_url": {
+			"value": "https://adlsrajtorageaccount1.dfs.core.windows.net/"
+		}
+	}
+}
