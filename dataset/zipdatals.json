@@ -20,6 +20,10 @@
 					"type": "Expression"
 				},
 				"fileSystem": "zip-source"
+			},
+			"compression": {
+				"type": "ZipDeflate",
+				"level": "Optimal"
 			}
 		}
 	}
