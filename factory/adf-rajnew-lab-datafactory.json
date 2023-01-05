@@ -1,0 +1,9 @@
+{
+	"name": "adf-rajnew-lab-datafactory",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "fa290e8f-a011-4204-9f76-11c156352a00",
+		"tenantId": "0f94ce5d-e0fb-4260-ad97-d7effbae1751"
+	}
+}

@@ -1,0 +1,88 @@
+{
+	"name": "MoviesDBSplitByYears",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MoviesDB",
+						"type": "DatasetReference"
+					},
+					"name": "MoviesDBDS"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "MoviesBefore1960",
+						"type": "DatasetReference"
+					},
+					"name": "MoviesBefore1960"
+				},
+				{
+					"dataset": {
+						"referenceName": "MoviesBefore1980",
+						"type": "DatasetReference"
+					},
+					"name": "MoviesBefore1980"
+				},
+				{
+					"dataset": {
+						"referenceName": "AllotherMovies",
+						"type": "DatasetReference"
+					},
+					"name": "AllotherMovies"
+				}
+			],
+			"transformations": [
+				{
+					"name": "SplitByYear"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          movie as string,",
+				"          title as string,",
+				"          genres as string,",
+				"          year as short,",
+				"          Rating as short,",
+				"          {Rotton Tomato} as short",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> MoviesDBDS",
+				"MoviesDBDS split(year < 1960,",
+				"     year < 1980,",
+				"     disjoint: false) ~> SplitByYear@(moviesbefore1960, moviesbefore1980, Allothermovies)",
+				"SplitByYear@moviesbefore1960 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['MoviesBefore1960.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> MoviesBefore1960",
+				"SplitByYear@moviesbefore1980 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['MoviesBefore1980.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> MoviesBefore1980",
+				"SplitByYear@Allothermovies sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['allothermovies.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> AllotherMovies"
+			]
+		}
+	}
+}

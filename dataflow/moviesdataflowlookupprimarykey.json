@@ -1,0 +1,80 @@
+{
+	"name": "moviesdataflowlookupprimarykey",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MoviesDB",
+						"type": "DatasetReference"
+					},
+					"name": "moviesDBs"
+				},
+				{
+					"dataset": {
+						"referenceName": "primarygenreds",
+						"type": "DatasetReference"
+					},
+					"name": "moviesDBprimarygenre"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "primarygenrelookupds",
+						"type": "DatasetReference"
+					},
+					"name": "moviesDBprimarygenreonly"
+				}
+			],
+			"transformations": [
+				{
+					"name": "lookuppriamarygenre"
+				},
+				{
+					"name": "filternotmatching"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          movie as string,",
+				"          title as string,",
+				"          genres as string,",
+				"          year as string,",
+				"          Rating as string,",
+				"          {Rotton Tomato} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> moviesDBs",
+				"source(output(",
+				"          movie as string,",
+				"          title as string,",
+				"          genres as string,",
+				"          year as string,",
+				"          {Rotten Tomato} as string,",
+				"          PrimaryGenre as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> moviesDBprimarygenre",
+				"moviesDBs, moviesDBprimarygenre lookup(moviesDBs@genres == PrimaryGenre,",
+				"     multiple: false,",
+				"     pickup: 'first',",
+				"     asc(moviesDBprimarygenre@year, true),",
+				"     broadcast: 'auto')~> lookuppriamarygenre",
+				"lookuppriamarygenre filter(!isNull(PrimaryGenre)) ~> filternotmatching",
+				"filternotmatching sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['moviesdbprimarygenrelookup.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> moviesDBprimarygenreonly"
+			]
+		}
+	}
+}

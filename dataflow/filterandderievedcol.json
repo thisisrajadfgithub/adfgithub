@@ -1,0 +1,84 @@
+{
+	"name": "filterandderievedcol",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MoviesDB",
+						"type": "DatasetReference"
+					},
+					"name": "NamemoviesDBcsv"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "movieDBFilterAndDerievedSink",
+						"type": "DatasetReference"
+					},
+					"name": "Sink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "RenameRottonTommato"
+				},
+				{
+					"name": "FilterYearsBefore1980"
+				},
+				{
+					"name": "DerivedPrimaryGenre"
+				},
+				{
+					"name": "DropUnwantedColumns"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          movie as string,",
+				"          title as string,",
+				"          genres as string,",
+				"          year as string,",
+				"          Rating as string,",
+				"          {Rotton Tomato} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> NamemoviesDBcsv",
+				"NamemoviesDBcsv select(mapColumn(",
+				"          movie,",
+				"          title,",
+				"          genres,",
+				"          year,",
+				"          Rating,",
+				"          {Rotten Tomato} = {Rotton Tomato}",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> RenameRottonTommato",
+				"RenameRottonTommato filter(toInteger(year) <1980) ~> FilterYearsBefore1980",
+				"FilterYearsBefore1980 derive(PrimaryGenre = iif(locate('|',genres)>1, left(genres,locate('|',genres)-1), genres)) ~> DerivedPrimaryGenre",
+				"DerivedPrimaryGenre select(mapColumn(",
+				"          movie,",
+				"          title,",
+				"          genres,",
+				"          year,",
+				"          {Rotten Tomato},",
+				"          PrimaryGenre",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> DropUnwantedColumns",
+				"DropUnwantedColumns sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['moviesdbprimarygenre.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> Sink"
+			]
+		}
+	}
+}
