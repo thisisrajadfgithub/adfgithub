@@ -583,7 +583,7 @@
 						"userProperties": [
 							{
 								"name": "filename",
-								"value": "*.gz"
+								"value": "*.zip"
 							}
 						],
 						"typeProperties": {
@@ -591,7 +591,7 @@
 								"referenceName": "zipdatals",
 								"type": "DatasetReference",
 								"parameters": {
-									"filename": "*.gz"
+									"filename": "*.zip"
 								}
 							},
 							"fieldList": [
