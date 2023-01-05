@@ -1,0 +1,26 @@
+{
+	"name": "zipdatals",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1_destgen2",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"filename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"fileSystem": "zip-source"
+			}
+		}
+	}
+}
