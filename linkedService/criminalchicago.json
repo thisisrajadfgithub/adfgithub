@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "HttpServer",
 		"typeProperties": {
-			"url": "https://data.cityofchicago.org/resource/crimes.json?$limit=50000 ",
+			"url": "https://data.cityofchicago.org/resource/crimes.json?$limit=50000",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Anonymous"
 		}
