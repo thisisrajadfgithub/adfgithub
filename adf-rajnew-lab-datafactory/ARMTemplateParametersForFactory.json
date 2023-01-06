@@ -26,14 +26,26 @@
 		"adfgithubgen2_accountKey": {
 			"value": ""
 		},
+		"datafilechicago_connectionString": {
+			"value": ""
+		},
 		"ADLSGen2_properties_typeProperties_url": {
 			"value": "https://adlsrajtorageaccount1.dfs.core.windows.net/"
 		},
 		"AzureDataLakeStorage1_destgen2_properties_typeProperties_url": {
 			"value": "https://gen2storagelab.dfs.core.windows.net/"
 		},
+		"HttpServerchicago_properties_typeProperties_url": {
+			"value": "https://data.cityofchicago.org/resource/crimes.json?$limit=50000"
+		},
+		"Httpcriminalrecordls_properties_typeProperties_url": {
+			"value": "https://data.cityofchicago.org/resource/crimes.json?$limit=50000"
+		},
 		"adfgithubgen2_properties_typeProperties_url": {
 			"value": "https://adlsrajtorageaccount1.dfs.core.windows.net/"
+		},
+		"criminalchicago_properties_typeProperties_url": {
+			"value": "https://data.cityofchicago.org/resource/crimes.json?$limit=50000"
 		}
 	}
 }

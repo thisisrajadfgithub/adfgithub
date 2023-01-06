@@ -35,6 +35,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'adfgithubgen2'"
 		},
+		"datafilechicago_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'datafilechicago'"
+		},
 		"ADLSGen2_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://adlsrajtorageaccount1.dfs.core.windows.net/"
@@ -43,9 +47,21 @@
 			"type": "string",
 			"defaultValue": "https://gen2storagelab.dfs.core.windows.net/"
 		},
+		"HttpServerchicago_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://data.cityofchicago.org/resource/crimes.json?$limit=50000"
+		},
+		"Httpcriminalrecordls_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://data.cityofchicago.org/resource/crimes.json?$limit=50000"
+		},
 		"adfgithubgen2_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://adlsrajtorageaccount1.dfs.core.windows.net/"
+		},
+		"criminalchicago_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://data.cityofchicago.org/resource/crimes.json?$limit=50000"
 		},
 		"containerUri": {
 			"type": "string",
@@ -95,14 +111,26 @@
 					"adfgithubgen2_accountKey": {
 						"value": "[parameters('adfgithubgen2_accountKey')]"
 					},
+					"datafilechicago_connectionString": {
+						"value": "[parameters('datafilechicago_connectionString')]"
+					},
 					"ADLSGen2_properties_typeProperties_url": {
 						"value": "[parameters('ADLSGen2_properties_typeProperties_url')]"
 					},
 					"AzureDataLakeStorage1_destgen2_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage1_destgen2_properties_typeProperties_url')]"
 					},
+					"HttpServerchicago_properties_typeProperties_url": {
+						"value": "[parameters('HttpServerchicago_properties_typeProperties_url')]"
+					},
+					"Httpcriminalrecordls_properties_typeProperties_url": {
+						"value": "[parameters('Httpcriminalrecordls_properties_typeProperties_url')]"
+					},
 					"adfgithubgen2_properties_typeProperties_url": {
 						"value": "[parameters('adfgithubgen2_properties_typeProperties_url')]"
+					},
+					"criminalchicago_properties_typeProperties_url": {
+						"value": "[parameters('criminalchicago_properties_typeProperties_url')]"
 					}
 				}
 			},
@@ -126,6 +154,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'adf-rajnew-lab-datafactory_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "adf-rajnew-lab-datafactory_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf-rajnew-lab-datafactory_ArmTemplate_1')]"
 			]
 		}
 	]
